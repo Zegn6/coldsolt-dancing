@@ -1,0 +1,29 @@
+[project]
+name = "coldsolt-dancing"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.14"
+dependencies = [
+    "django>=6.0.6",
+]
+
+[dependency-groups]
+dev = [
+    "coverage>=7.14.3",
+    "ruff>=0.15.20",
+]
+
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "*/migrations/*",
+    "*/.venv/*",
+    "manage.py",
+]

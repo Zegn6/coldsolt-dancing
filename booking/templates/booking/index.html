@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>COLDSOLT Dancing</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body>
+    <h1>COLDSOLT Dancing</h1>
+    <h2>Book a Lesson</h2>
+
+    <label>Instructor:</label>
+    <select name="instructor"
+            hx-get="/calendar/"
+            hx-target="#calendar"
+            hx-trigger="change">
+        <option value="">-- Select an instructor --</option>
+        {% for instructor in instructors %}
+            <option value="{{ instructor.id }}">{{ instructor.name }}</option>
+        {% endfor %}
+    </select>
+
+    <div id="calendar">
+        <p>Please select an instructor.</p>
+    </div>
+</body>
+</html>

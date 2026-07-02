@@ -1,0 +1,29 @@
+{% if dates %}
+    <h3>Available dates for {{ instructor.name }}</h3>
+    <form hx-post="/reserve/" hx-target="#result">
+        {% csrf_token %}
+        <input type="hidden" name="instructor_id" value="{{ instructor.id }}">
+
+        <label>Date:</label>
+        <select name="date">
+            {% for date in dates %}
+                <option value="{{ date|date:'Y-m-d' }}">{{ date }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Time slot:</label>
+        <select name="slot">
+            <option value="1">Slot 1 (Morning)</option>
+            <option value="2">Slot 2 (Afternoon)</option>
+            <option value="3">Slot 3 (Evening)</option>
+        </select>
+
+        <label>Your name:</label>
+        <input type="text" name="name" required>
+
+        <button type="submit">Reserve</button>
+    </form>
+    <div id="result"></div>
+{% else %}
+    <p>No available dates. Please choose another instructor.</p>
+{% endif %}
