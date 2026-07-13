@@ -1,6 +1,8 @@
-from django.test import TestCase
-from .models import Instructor, User, Reservation
 import datetime
+
+from django.test import TestCase
+
+from .models import Instructor, User, Reservation
 
 
 class InstructorModelTest(TestCase):
@@ -39,3 +41,7 @@ class ReservationModelTest(TestCase):
 
     def test_date(self):
         self.assertEqual(self.reservation.date, datetime.date(2026, 7, 7))
+
+    def test_reservation_str_shows_morning(self):
+        """slot=1のとき'Morning'が表示されるか"""
+        self.assertIn("Morning", str(self.reservation))
