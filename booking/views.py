@@ -67,20 +67,17 @@ def reserve(request):
     slot_str = request.POST.get('slot', '').strip()
     name = request.POST.get('name', '').strip()
 
-    # Validate name
     if not name:
         return HttpResponse(
             '<p style="color:red;">Please enter your name.</p>'
         )
 
-    # Validate slot
     if slot_str not in ('1', '2', '3'):
         return HttpResponse(
             '<p style="color:red;">Invalid time slot selected.</p>'
         )
     slot = int(slot_str)
 
-    # Validate instructor
     try:
         instructor = Instructor.objects.get(id=instructor_id)
     except Instructor.DoesNotExist:
@@ -88,7 +85,6 @@ def reserve(request):
             '<p style="color:red;">Instructor not found.</p>', status=404
         )
 
-    # Validate date
     try:
         date = datetime.date.fromisoformat(date_str)
     except ValueError:
@@ -107,7 +103,6 @@ def reserve(request):
             '<p style="color:red;">Weekends are not available.</p>'
         )
 
-    # Check if slot is already taken
     already_booked = Reservation.objects.filter(
         instructor=instructor, date=date, slot=slot
     ).exists()
@@ -170,27 +165,26 @@ def register(request):
         name = request.POST.get('name', '').strip()
         password = request.POST.get('password', '').strip()
 
-        # Validate name
         if not name:
             return render(request, 'booking/register.html', {
                 'error': 'Name cannot be empty.'
             })
 
-        # Validate password length
         if len(password) < 4:
             return render(request, 'booking/register.html', {
                 'error': 'Password must be at least 4 characters.',
                 'name': name,
             })
 
-        # Check for duplicate username
         if User.objects.filter(name=name).exists():
             return render(request, 'booking/register.html', {
                 'error': 'Username already exists.',
                 'name': name,
             })
 
-        User.objects.create(name=name, password=password)
+        user = User.objects.create(name=name, password=password)
+        request.session['user_id'] = user.id
+        request.session['user_name'] = user.name
         return redirect('index')
 
     return render(request, 'booking/register.html')
@@ -207,7 +201,6 @@ def login_view(request):
         name = request.POST.get('name', '').strip()
         password = request.POST.get('password', '').strip()
 
-        # Validate inputs
         if not name or not password:
             return render(request, 'booking/login.html', {
                 'error': 'Please enter both name and password.'
