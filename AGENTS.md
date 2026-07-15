@@ -48,3 +48,26 @@ uv run python manage.py runserver
 - `/reserve/`: `instructor_id`, `date` (YYYY-MM-DD), `slot` (1-3), `name`
 - `/register/`: `name`, `password`
 - `/login/`: `name`, `password`
+## Database Schema
+
+### Instructor
+- id (auto)
+- name: CharField(max_length=100)
+
+### User
+- id (auto)
+- name: CharField(max_length=100)
+- password: CharField(max_length=100)
+
+### Reservation
+- id (auto)
+- date: DateField
+- slot: IntegerField (1=Morning, 2=Afternoon, 3=Evening)
+- instructor: ForeignKey(Instructor)
+- user: ForeignKey(User)
+
+## Testing
+Run tests with:
+```bash
+uv run python manage.py test
+```
