@@ -29,6 +29,25 @@ uv run python manage.py runserver
 - `User` - Registered users
 - `Reservation` - Bookings (date, slot 1-3, instructor, user)
 
+## API (URL Routing)
+
+| URL | Method | View | Description |
+|-----|--------|------|-------------|
+| `/` | GET | `index` | Home page with instructor selector |
+| `/calendar/` | GET | `calendar` | HTMX partial: available dates for instructor |
+| `/reserve/` | POST | `reserve` | Process a reservation |
+| `/my-bookings/` | GET | `my_bookings` | Show user's booking history |
+| `/register/` | GET/POST | `register` | User registration |
+| `/login/` | GET/POST | `login_view` | User login |
+
+### URL Parameters
+- `/calendar/?instructor=<id>` — instructor ID (required)
+- `/my-bookings/?name=<name>` — user name to look up bookings
+
+### POST Body
+- `/reserve/`: `instructor_id`, `date` (YYYY-MM-DD), `slot` (1-3), `name`
+- `/register/`: `name`, `password`
+- `/login/`: `name`, `password`
 ## Database Schema
 
 ### Instructor
