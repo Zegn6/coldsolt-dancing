@@ -69,12 +69,12 @@ def reserve(request):
 
     if not name:
         return HttpResponse(
-            '<p style="color:red;">Please enter your name.</p>'
+            '<p class="message-error">Please enter your name.</p>'
         )
 
     if slot_str not in ('1', '2', '3'):
         return HttpResponse(
-            '<p style="color:red;">Invalid time slot selected.</p>'
+            '<p class="message-error">Invalid time slot selected.</p>'
         )
     slot = int(slot_str)
 
@@ -82,25 +82,25 @@ def reserve(request):
         instructor = Instructor.objects.get(id=instructor_id)
     except Instructor.DoesNotExist:
         return HttpResponse(
-            '<p style="color:red;">Instructor not found.</p>', status=404
+            '<p class="message-error">Instructor not found.</p>', status=404
         )
 
     try:
         date = datetime.date.fromisoformat(date_str)
     except ValueError:
         return HttpResponse(
-            '<p style="color:red;">Invalid date format.</p>'
+            '<p class="message-error">Invalid date format.</p>'
         )
 
     today = datetime.date.today()
     if date <= today or date > today + datetime.timedelta(days=14):
         return HttpResponse(
-            '<p style="color:red;">Date must be within the next 14 days.</p>'
+            '<p class="message-error">Date must be within the next 14 days.</p>'
         )
 
     if date.weekday() >= 5:
         return HttpResponse(
-            '<p style="color:red;">Weekends are not available.</p>'
+            '<p class="message-error">Weekends are not available.</p>'
         )
 
     already_booked = Reservation.objects.filter(
@@ -109,7 +109,7 @@ def reserve(request):
 
     if already_booked:
         return HttpResponse(
-            '<p style="color:red;">Sorry, that slot was just taken. '
+            '<p class="message-error">Sorry, that slot was just taken. '
             'Please choose another.</p>'
         )
 
@@ -123,7 +123,7 @@ def reserve(request):
 
     slot_names = {1: 'Morning', 2: 'Afternoon', 3: 'Evening'}
     return HttpResponse(
-        f'<p style="color:green;">Booked! {instructor.name} on {date}, '
+        f'<p class="message-success">Booked! {instructor.name} on {date}, '
         f'{slot_names[slot]} slot. See you there, {name}!</p>'
     )
 

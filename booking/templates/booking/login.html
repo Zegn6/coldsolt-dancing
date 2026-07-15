@@ -6,14 +6,31 @@
 <h2>Login</h2>
 
 {% if error %}
-    <p class="error">{{ error }}</p>
+    <div class="message-error" role="alert">{{ error }}</div>
 {% endif %}
 
-<form method="post">
+<form method="post" novalidate>
     {% csrf_token %}
-    <label>Name: <input type="text" name="name" value="{{ name|default:'' }}" required></label><br><br>
-    <label>Password: <input type="password" name="password" required></label><br><br>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text"
+               id="name"
+               name="name"
+               value="{{ name|default:'' }}"
+               required
+               autocomplete="username">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password"
+               id="password"
+               name="password"
+               required
+               autocomplete="current-password">
+    </div>
+
     <button type="submit">Login</button>
 </form>
-<p>Don't have an account? <a href="/register/">Register here</a></p>
+<a href="/register/" class="link-secondary">Don't have an account? Register here</a>
 {% endblock %}

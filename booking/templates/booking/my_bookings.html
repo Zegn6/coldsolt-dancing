@@ -6,17 +6,26 @@
 <h2>My Bookings</h2>
 
 <form method="get">
-    <input type="text" name="name"
-           value="{{ request.session.user_name|default:name }}"
-           placeholder="Your name">
+    <div class="form-group">
+        <label for="name">Search by name:</label>
+        <input type="text"
+               id="name"
+               name="name"
+               value="{{ name|default:'' }}"
+               placeholder="Your name"
+               autocomplete="name">
+    </div>
     <button type="submit">Search</button>
 </form>
 
 {% if reservations %}
-    <ul>
-    {% for r in reservations %}
-        <li>{{ r.date }} - {{ r.get_slot_display }} with {{ r.instructor.name }}</li>
-    {% endfor %}
+    <ul class="booking-list" aria-label="Your bookings">
+        {% for r in reservations %}
+            <li>
+                <strong>{{ r.date|date:'D, M j, Y' }}</strong>
+                &mdash; {{ r.get_slot_display }} with {{ r.instructor.name }}
+            </li>
+        {% endfor %}
     </ul>
 {% elif name %}
     <p>No bookings found for "{{ name }}".</p>

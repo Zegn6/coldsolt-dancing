@@ -2,21 +2,39 @@
 
 {% block title %}Home - COLDSOLT Dancing{% endblock %}
 
+{% block hero %}
+<div class="hero">
+    <div class="hero-logo">Coldsolt</div>
+    
+    <p>Book your dance lesson with your favorite instructor</p>
+</div>
+{% endblock %}
+
 {% block content %}
-<h2>Book a Lesson</h2>
+<div class="card">
+    <h3>
+        <span class="step-badge">1</span>
+        Choose an instructor
+    </h3>
+    <div class="form-group">
+        <label for="instructor-select">INSTRUCTOR</label>
+        <select id="instructor-select"
+                name="instructor"
+                aria-label="Select an instructor"
+                hx-get="/calendar/"
+                hx-target="#calendar"
+                hx-trigger="change">
+            <option value="">-- Select an instructor --</option>
+            {% for instructor in instructors %}
+                <option value="{{ instructor.id }}">{{ instructor.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>
 
-<label>Instructor:</label>
-<select name="instructor"
-        hx-get="/calendar/"
-        hx-target="#calendar"
-        hx-trigger="change">
-    <option value="">-- Select an instructor --</option>
-    {% for instructor in instructors %}
-        <option value="{{ instructor.id }}">{{ instructor.name }}</option>
-    {% endfor %}
-</select>
-
-<div id="calendar">
-    <p>Please select an instructor.</p>
+<div id="calendar" aria-live="polite">
+    <p style="color:#C2526F; font-size:13px; padding:8px 0;">
+        Please select an instructor to see available dates.
+    </p>
 </div>
 {% endblock %}

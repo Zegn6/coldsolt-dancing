@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+/* ── Reset & Base ─────────────────────────────── */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #444;
+    background: #FFF6F8;
+}
+
+/* ── Header ───────────────────────────────────── */
+header {
+    background: #FDE8EF;
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #FACCDA;
+}
+
+.logo-c {
+    font-family: 'Parisienne', cursive;
+    font-size: 36px;
+    color: #D4688A;
+    line-height: 1;
+}
+
+.logo-text {
+    font-size: 15px;
+    font-weight: 700;
+    color: #C2526F;
+    letter-spacing: 0.08em;
+}
+
+.logo-sub {
+    font-size: 10px;
+    color: #D4688A;
+    letter-spacing: 0.15em;
+    display: block;
+    margin-top: -2px;
+}
+
+/* ── Navigation ───────────────────────────────── */
+nav {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+nav a {
+    color: #C2526F;
+    font-size: 12px;
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid #FACCDA;
+    background: #fff;
+    transition: background 0.2s;
+}
+
+nav a:hover,
+nav a:focus {
+    background: #FDE8EF;
+    outline: none;
+}
+
+.nav-user {
+    font-size: 12px;
+    color: #C2526F;
+    margin-left: auto;
+}
+
+/* ── Hero ─────────────────────────────────────── */
+.hero {
+    background: #FEF0F4;
+    padding: 28px 24px;
+    text-align: center;
+    border-bottom: 1px solid #FACCDA;
+}
+
+.hero-logo {
+    font-family: 'Parisienne', cursive;
+    font-size: 42px;
+    color: #D4688A;
+    margin-bottom: 4px;
+}
+
+.hero h2 {
+    color: #A03050;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+}
+
+.hero p {
+    color: #C2526F;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+}
+
+/* ── Main Content ─────────────────────────────── */
+main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+/* ── Cards ────────────────────────────────────── */
+.card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 14px;
+    border: 1px solid #FACCDA;
+}
+
+.card h3 {
+    color: #C2526F;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #FDE8EF;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.step-badge {
+    width: 22px;
+    height: 22px;
+    background: #FDE8EF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: #C2526F;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* ── Forms ────────────────────────────────────── */
+.form-group {
+    margin-bottom: 12px;
+}
+
+label {
+    display: block;
+    font-size: 11px;
+    color: #C2526F;
+    margin-bottom: 4px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #FACCDA;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #444;
+    background: #FFFBFC;
+    outline: none;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: border-color 0.2s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+select:focus {
+    border-color: #D4688A;
+}
+
+button,
+.btn {
+    display: inline-block;
+    background: #D4688A;
+    color: #fff;
+    border: none;
+    border-radius: 24px;
+    padding: 13px 32px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    letter-spacing: 0.08em;
+    font-family: 'Noto Sans JP', sans-serif;
+    transition: background 0.2s;
+    text-decoration: none;
+    text-align: center;
+}
+
+button:hover,
+button:focus,
+.btn:hover,
+.btn:focus {
+    background: #C2526F;
+    outline: none;
+}
+
+.hint {
+    font-size: 11px;
+    color: #D4688A;
+    margin-top: 3px;
+}
+
+/* ── Messages ─────────────────────────────────── */
+.message-error {
+    background: #FDE8EF;
+    border-left: 3px solid #D4688A;
+    color: #A03050;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 13px;
+}
+
+.message-success {
+    background: #F0FBF4;
+    border-left: 3px solid #66BB6A;
+    color: #2E7D32;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-bottom: 14px;
+    font-size: 13px;
+}
+
+/* ── Calendar / Booking ───────────────────────── */
+#calendar {
+    margin-top: 1rem;
+    padding: 16px;
+    background: #FFFBFC;
+    border: 1px solid #FACCDA;
+    border-radius: 10px;
+    min-height: 60px;
+}
+
+/* ── Slot Buttons ─────────────────────────────── */
+.slot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.slot-btn {
+    border: 1px solid #FACCDA;
+    border-radius: 8px;
+    padding: 9px 4px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 11px;
+    color: #C2526F;
+    font-weight: 700;
+    background: #FFFBFC;
+}
+
+/* ── Booking List ─────────────────────────────── */
+.booking-list {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+.booking-list li {
+    padding: 12px 14px;
+    background: #FFFBFC;
+    border: 1px solid #FACCDA;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: #444;
+}
+
+/* ── Links ────────────────────────────────────── */
+a {
+    color: #D4688A;
+}
+
+a:hover,
+a:focus {
+    color: #A03050;
+}
+
+.link-secondary {
+    font-size: 12px;
+    margin-top: 12px;
+    display: block;
+    text-align: center;
+}
+
+/* ── Badge ────────────────────────────────────── */
+.avail-badge {
+    display: inline-block;
+    background: #FDE8EF;
+    color: #C2526F;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 4px;
+}
+
+/* ── Footer ───────────────────────────────────── */
+footer {
+    background: #FDE8EF;
+    color: #C2526F;
+    text-align: center;
+    padding: 14px;
+    font-size: 11px;
+    margin-top: 2rem;
+    letter-spacing: 0.05em;
+}
+
+footer .footer-c {
+    font-family: 'Parisienne', cursive;
+    font-size: 15px;
+    vertical-align: middle;
+    margin-right: 4px;
+}
+
+/* ── Responsive ───────────────────────────────── */
+@media (max-width: 600px) {
+    header {
+        padding: 10px 14px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .logo-c {
+        font-size: 28px;
+    }
+
+    nav {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .hero-logo {
+        font-size: 32px;
+    }
+
+    main {
+        padding: 10px;
+    }
+
+    .slot-grid {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

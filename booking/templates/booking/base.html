@@ -1,8 +1,12 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}COLDSOLT Dancing{% endblock %}</title>
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <link rel="stylesheet" href="{% static 'booking/css/style.css' %}">
+    <script src="https://unpkg.com/htmx.org@1.9.10" defer></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.body.addEventListener('htmx:configRequest', function(event) {
@@ -10,29 +14,39 @@
             });
         });
     </script>
-    <style>
-        body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; }
-        nav { margin-bottom: 20px; padding: 10px; background: #f0f0f0; }
-        nav a { margin-right: 15px; text-decoration: none; }
-        .error { color: red; }
-        .success { color: green; }
-    </style>
 </head>
 <body>
-    <h1>COLDSOLT Dancing</h1>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/my-bookings/">My Bookings</a>
-        {% if request.session.user_name %}
-            Welcome, {{ request.session.user_name }}!
-            <a href="/logout/">Logout</a>
-        {% else %}
-            <a href="/login/">Login</a>
-            <a href="/register/">Register</a>
-        {% endif %}
-    </nav>
+    <header>
+        <div class="hp-logo">
+            <div class="logo-c">C</div>
+            <div>
+                <div class="logo-text">COLDSOLT Dancing</div>
+                <span class="logo-sub">dance lesson booking</span>
+            </div>
+        </div>
+        <nav aria-label="Main navigation">
+            <a href="/my-bookings/">My Bookings</a>
+            {% if request.session.user_name %}
+                <span class="nav-user">
+                    Welcome, {{ request.session.user_name }}!
+                    <a href="/logout/">Logout</a>
+                </span>
+            {% else %}
+                <a href="/login/">Login</a>
+                <a href="/register/">Register</a>
+            {% endif %}
+        </nav>
+    </header>
 
-    {% block content %}
-    {% endblock %}
+    {% block hero %}{% endblock %}
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <span class="footer-c">C</span> COLDSOLT Dancing &copy; 2026
+    </footer>
 </body>
 </html>

@@ -6,15 +6,34 @@
 <h2>Register</h2>
 
 {% if error %}
-    <p class="error">{{ error }}</p>
+    <div class="message-error" role="alert">{{ error }}</div>
 {% endif %}
 
-<form method="post">
+<form method="post" novalidate>
     {% csrf_token %}
-    <label>Name: <input type="text" name="name" value="{{ name|default:'' }}" required></label><br><br>
-    <label>Password: <input type="password" name="password" required></label><br><br>
-    <p><small>Password must be at least 4 characters.</small></p>
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text"
+               id="name"
+               name="name"
+               value="{{ name|default:'' }}"
+               required
+               autocomplete="username"
+               aria-describedby="name-hint">
+    </div>
+
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password"
+               id="password"
+               name="password"
+               required
+               autocomplete="new-password"
+               aria-describedby="password-hint">
+        <span id="password-hint" class="hint">At least 4 characters.</span>
+    </div>
+
     <button type="submit">Register</button>
 </form>
-<p>Already have an account? <a href="/login/">Login here</a></p>
+<a href="/login/" class="link-secondary">Already have an account? Login here</a>
 {% endblock %}
