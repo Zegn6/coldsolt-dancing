@@ -270,6 +270,38 @@ button:focus,
     background: #FFFBFC;
 }
 
+/* ── Slot Radio Buttons ───────────────────────── */
+.slot-label {
+    cursor: pointer;
+}
+
+.slot-radio {
+    display: none;
+}
+
+.slot-radio:checked + .slot-btn {
+    background: #D4688A;
+    color: #fff;
+    border-color: #D4688A;
+}
+
+/* ── Reserve Button States ────────────────────── */
+.reserve-btn {
+    transition: background 0.2s, opacity 0.2s;
+}
+
+.reserve-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: #D4688A;
+}
+
+/* ── HTMX Loading Indicator ───────────────────── */
+.htmx-request .reserve-btn {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 /* ── Booking List ─────────────────────────────── */
 .booking-list {
     list-style: none;
@@ -357,9 +389,5 @@ footer .footer-c {
 
     main {
         padding: 10px;
-    }
-
-    .slot-grid {
-        grid-template-columns: 1fr 1fr 1fr;
     }
 }

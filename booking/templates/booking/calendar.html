@@ -4,7 +4,10 @@
         <span class="step-badge">2</span>
         Pick a date &amp; time
     </h3>
-    <form method="post" action="/reserve/">
+    <form hx-post="/reserve/"
+          hx-target="#result"
+          hx-swap="innerHTML"
+          hx-disabled-elt="button[type='submit']">
         {% csrf_token %}
         <input type="hidden" name="instructor_id" value="{{ instructor.id }}">
 
@@ -20,16 +23,16 @@
         <div class="form-group">
             <label>TIME SLOT</label>
             <div class="slot-grid">
-                <label style="cursor:pointer;">
-                    <input type="radio" name="slot" value="1" required style="display:none">
+                <label class="slot-label">
+                    <input type="radio" name="slot" value="1" required class="slot-radio">
                     <div class="slot-btn">🌅 Morning</div>
                 </label>
-                <label style="cursor:pointer;">
-                    <input type="radio" name="slot" value="2" style="display:none">
+                <label class="slot-label">
+                    <input type="radio" name="slot" value="2" class="slot-radio">
                     <div class="slot-btn">☀️ Afternoon</div>
                 </label>
-                <label style="cursor:pointer;">
-                    <input type="radio" name="slot" value="3" style="display:none">
+                <label class="slot-label">
+                    <input type="radio" name="slot" value="3" class="slot-radio">
                     <div class="slot-btn">🌙 Evening</div>
                 </label>
             </div>
@@ -46,9 +49,9 @@
                    autocomplete="name">
         </div>
 
-        <button type="submit">Reserve Now</button>
+        <button type="submit" class="reserve-btn">Reserve Now</button>
     </form>
-    <div id="result" aria-live="polite"></div>
+    <div id="result" aria-live="polite" style="margin-top: 12px;"></div>
 </div>
 {% else %}
 <div class="card">
