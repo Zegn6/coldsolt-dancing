@@ -11,8 +11,10 @@
 
 <form method="post">
     {% csrf_token %}
-    <label>Name: <input type="text" name="name" required></label><br><br>
+    <label>Name: <input type="text" name="name" value="{{ name|default:'' }}" required></label><br><br>
     <label>Password: <input type="password" name="password" required></label><br><br>
+    <p><small>Password must be at least 4 characters.</small></p>
     <button type="submit">Register</button>
 </form>
+<p>Already have an account? <a href="/login/">Login here</a></p>
 {% endblock %}
