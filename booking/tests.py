@@ -90,7 +90,7 @@ class RegisterViewTest(TestCase):
     def test_register_creates_user(self):
         response = self.client.post(reverse('register'), {
             'name': 'testuser',
-            'password': 'testpass',
+            'password': 'pass1234',
         })
         self.assertEqual(response.status_code, 302)
         self.assertTrue(User.objects.filter(name='testuser').exists())
@@ -114,3 +114,88 @@ class MyBookingsViewTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Anna Smith")
+
+
+class ReserveViewValidationTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.instructor = Instructor.objects.create(name="Anna Smith")
+
+    def test_reserve_empty_name(self):
+        today = datetime.date.today()
+        date = today + datetime.timedelta(days=1)
+        if date.weekday() >= 5:
+            date = today + datetime.timedelta(days=3)
+        response = self.client.post(reverse('reserve'), {
+            'instructor_id': self.instructor.id,
+            'date': date.strftime('%Y-%m-%d'),
+            'slot': '1',
+            'name': '',
+        })
+        self.assertContains(response, 'Please enter your name')
+
+    def test_reserve_invalid_slot(self):
+        today = datetime.date.today()
+        date = today + datetime.timedelta(days=1)
+        response = self.client.post(reverse('reserve'), {
+            'instructor_id': self.instructor.id,
+            'date': date.strftime('%Y-%m-%d'),
+            'slot': '9',
+            'name': 'John',
+        })
+        self.assertContains(response, 'Invalid time slot')
+
+
+class RegisterViewValidationTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+
+    def test_register_empty_name(self):
+        response = self.client.post(reverse('register'), {
+            'name': '',
+            'password': 'pass1234',
+        })
+        self.assertContains(response, 'Name cannot be empty')
+
+    def test_register_short_password(self):
+        response = self.client.post(reverse('register'), {
+            'name': 'testuser',
+            'password': 'ab',
+        })
+        self.assertContains(response, 'at least 4 characters')
+
+    def test_register_duplicate_name(self):
+        User.objects.create(name='existing', password='pass')
+        response = self.client.post(reverse('register'), {
+            'name': 'existing',
+            'password': 'pass1234',
+        })
+        self.assertContains(response, 'already exists')
+
+
+class LoginViewValidationTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        User.objects.create(name='testuser', password='pass1234')
+
+    def test_login_empty_fields(self):
+        response = self.client.post(reverse('login'), {
+            'name': '',
+            'password': '',
+        })
+        self.assertContains(response, 'Please enter both')
+
+    def test_login_wrong_password(self):
+        response = self.client.post(reverse('login'), {
+            'name': 'testuser',
+            'password': 'wrongpass',
+        })
+        self.assertContains(response, 'Invalid name or password')
+
+    def test_login_success_sets_session(self):
+        response = self.client.post(reverse('login'), {
+            'name': 'testuser',
+            'password': 'pass1234',
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(self.client.session['user_name'], 'testuser')

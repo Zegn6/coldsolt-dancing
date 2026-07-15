@@ -17,7 +17,7 @@ def index(request):
         'instructors': instructors,
     })
 
-# 改善ed
+
 def calendar(request):
     """
     HTMX partial: returns available dates for selected instructor.
@@ -52,29 +52,62 @@ def calendar(request):
     })
 
 
-# revised
 def reserve(request):
     """
     Process a reservation request.
     POST /reserve/
-    Body: instructor_id, date, slot, name
+    Body: instructor_id, date (YYYY-MM-DD), slot (1-3), name
     Returns: HTML fragment with success or error message
     """
     if request.method != 'POST':
         return HttpResponse('Method not allowed', status=405)
 
-    instructor_id = request.POST.get('instructor_id')
-    date_str = request.POST.get('date')
-    slot = int(request.POST.get('slot'))
-    name = request.POST.get('name')
+    instructor_id = request.POST.get('instructor_id', '').strip()
+    date_str = request.POST.get('date', '').strip()
+    slot_str = request.POST.get('slot', '').strip()
+    name = request.POST.get('name', '').strip()
 
+    # Validate name
+    if not name:
+        return HttpResponse(
+            '<p style="color:red;">Please enter your name.</p>'
+        )
+
+    # Validate slot
+    if slot_str not in ('1', '2', '3'):
+        return HttpResponse(
+            '<p style="color:red;">Invalid time slot selected.</p>'
+        )
+    slot = int(slot_str)
+
+    # Validate instructor
     try:
         instructor = Instructor.objects.get(id=instructor_id)
     except Instructor.DoesNotExist:
-        return HttpResponse('<p>Instructor not found.</p>', status=404)
+        return HttpResponse(
+            '<p style="color:red;">Instructor not found.</p>', status=404
+        )
 
-    date = datetime.date.fromisoformat(date_str)
+    # Validate date
+    try:
+        date = datetime.date.fromisoformat(date_str)
+    except ValueError:
+        return HttpResponse(
+            '<p style="color:red;">Invalid date format.</p>'
+        )
 
+    today = datetime.date.today()
+    if date <= today or date > today + datetime.timedelta(days=14):
+        return HttpResponse(
+            '<p style="color:red;">Date must be within the next 14 days.</p>'
+        )
+
+    if date.weekday() >= 5:
+        return HttpResponse(
+            '<p style="color:red;">Weekends are not available.</p>'
+        )
+
+    # Check if slot is already taken
     already_booked = Reservation.objects.filter(
         instructor=instructor, date=date, slot=slot
     ).exists()
@@ -106,9 +139,11 @@ def my_bookings(request):
     GET /my-bookings/?name=<name>
     Returns: HTML page with list of past reservations
     """
-    name = request.GET.get('name', '')
-    reservations = []
+    name = request.GET.get('name', '').strip()
+    if not name and request.session.get('user_name'):
+        name = request.session['user_name']
 
+    reservations = []
     if name:
         try:
             user = User.objects.get(name=name)
@@ -132,12 +167,27 @@ def register(request):
     Returns: HTML page or redirect to home
     """
     if request.method == 'POST':
-        name = request.POST.get('name')
-        password = request.POST.get('password')
+        name = request.POST.get('name', '').strip()
+        password = request.POST.get('password', '').strip()
 
+        # Validate name
+        if not name:
+            return render(request, 'booking/register.html', {
+                'error': 'Name cannot be empty.'
+            })
+
+        # Validate password length
+        if len(password) < 4:
+            return render(request, 'booking/register.html', {
+                'error': 'Password must be at least 4 characters.',
+                'name': name,
+            })
+
+        # Check for duplicate username
         if User.objects.filter(name=name).exists():
             return render(request, 'booking/register.html', {
-                'error': 'Username already exists.'
+                'error': 'Username already exists.',
+                'name': name,
             })
 
         User.objects.create(name=name, password=password)
@@ -146,7 +196,6 @@ def register(request):
     return render(request, 'booking/register.html')
 
 
-# revised
 def login_view(request):
     """
     User login page.
@@ -155,8 +204,14 @@ def login_view(request):
     Returns: HTML page or redirect to home
     """
     if request.method == 'POST':
-        name = request.POST.get('name')
-        password = request.POST.get('password')
+        name = request.POST.get('name', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        # Validate inputs
+        if not name or not password:
+            return render(request, 'booking/login.html', {
+                'error': 'Please enter both name and password.'
+            })
 
         try:
             user = User.objects.get(name=name, password=password)
@@ -165,7 +220,8 @@ def login_view(request):
             return redirect('index')
         except User.DoesNotExist:
             return render(request, 'booking/login.html', {
-                'error': 'Invalid name or password.'
+                'error': 'Invalid name or password.',
+                'name': name,
             })
 
     return render(request, 'booking/login.html')
