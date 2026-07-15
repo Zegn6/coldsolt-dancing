@@ -17,7 +17,7 @@ def index(request):
         'instructors': instructors,
     })
 
-
+# 改善ed
 def calendar(request):
     """
     HTMX partial: returns available dates for selected instructor.
@@ -28,13 +28,17 @@ def calendar(request):
     if not instructor_id:
         return HttpResponse('<p>Please select an instructor.</p>')
 
-    instructor = Instructor.objects.get(id=instructor_id)
+    try:
+        instructor = Instructor.objects.get(id=instructor_id)
+    except Instructor.DoesNotExist:
+        return HttpResponse('<p>Instructor not found.</p>', status=404)
+
     today = datetime.date.today()
     dates = []
 
     for i in range(1, 15):
         date = today + datetime.timedelta(days=i)
-        if date.weekday() >= 5:  # skip weekends
+        if date.weekday() >= 5:
             continue
         booked = Reservation.objects.filter(
             instructor=instructor, date=date
@@ -48,6 +52,7 @@ def calendar(request):
     })
 
 
+# revised
 def reserve(request):
     """
     Process a reservation request.
@@ -63,7 +68,11 @@ def reserve(request):
     slot = int(request.POST.get('slot'))
     name = request.POST.get('name')
 
-    instructor = Instructor.objects.get(id=instructor_id)
+    try:
+        instructor = Instructor.objects.get(id=instructor_id)
+    except Instructor.DoesNotExist:
+        return HttpResponse('<p>Instructor not found.</p>', status=404)
+
     date = datetime.date.fromisoformat(date_str)
 
     already_booked = Reservation.objects.filter(
@@ -76,6 +85,7 @@ def reserve(request):
             'Please choose another.</p>'
         )
 
+    # NOTE: no authentication yet; name-only lookup is a placeholder
     user, _ = User.objects.get_or_create(
         name=name, defaults={'password': ''}
     )
@@ -136,6 +146,7 @@ def register(request):
     return render(request, 'booking/register.html')
 
 
+# revised
 def login_view(request):
     """
     User login page.
@@ -149,6 +160,8 @@ def login_view(request):
 
         try:
             user = User.objects.get(name=name, password=password)
+            request.session['user_id'] = user.id
+            request.session['user_name'] = user.name
             return redirect('index')
         except User.DoesNotExist:
             return render(request, 'booking/login.html', {
