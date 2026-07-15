@@ -169,3 +169,13 @@ def login_view(request):
             })
 
     return render(request, 'booking/login.html')
+
+
+def logout_view(request):
+    """
+    Logout: clear session and redirect to home.
+    GET /logout/
+    Returns: redirect to home page
+    """
+    request.session.flush()
+    return redirect('index')

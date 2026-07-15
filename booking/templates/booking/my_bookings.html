@@ -1,23 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head><title>My Bookings - COLDSOLT Dancing</title></head>
-<body>
-    <h1>My Bookings</h1>
-    <a href="/">Back to Home</a>
+{% extends 'booking/base.html' %}
 
-    <form method="get">
-        <input type="text" name="name" value="{{ name }}" placeholder="Your name">
-        <button type="submit">Search</button>
-    </form>
+{% block title %}My Bookings - COLDSOLT Dancing{% endblock %}
 
-    {% if reservations %}
-        <ul>
-        {% for r in reservations %}
-            <li>{{ r.date }} - {{ r.get_slot_display }} with {{ r.instructor.name }}</li>
-        {% endfor %}
-        </ul>
-    {% elif name %}
-        <p>No bookings found for "{{ name }}".</p>
-    {% endif %}
-</body>
-</html>
+{% block content %}
+<h2>My Bookings</h2>
+
+<form method="get">
+    <input type="text" name="name"
+           value="{{ request.session.user_name|default:name }}"
+           placeholder="Your name">
+    <button type="submit">Search</button>
+</form>
+
+{% if reservations %}
+    <ul>
+    {% for r in reservations %}
+        <li>{{ r.date }} - {{ r.get_slot_display }} with {{ r.instructor.name }}</li>
+    {% endfor %}
+    </ul>
+{% elif name %}
+    <p>No bookings found for "{{ name }}".</p>
+{% endif %}
+{% endblock %}
