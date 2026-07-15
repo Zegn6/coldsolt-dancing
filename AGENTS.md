@@ -28,3 +28,27 @@ uv run python manage.py runserver
 - `Instructor` - Dance instructors (up to 5)
 - `User` - Registered users
 - `Reservation` - Bookings (date, slot 1-3, instructor, user)
+
+## Database Schema
+
+### Instructor
+- id (auto)
+- name: CharField(max_length=100)
+
+### User
+- id (auto)
+- name: CharField(max_length=100)
+- password: CharField(max_length=100)
+
+### Reservation
+- id (auto)
+- date: DateField
+- slot: IntegerField (1=Morning, 2=Afternoon, 3=Evening)
+- instructor: ForeignKey(Instructor)
+- user: ForeignKey(User)
+
+## Testing
+Run tests with:
+```bash
+uv run python manage.py test
+```
